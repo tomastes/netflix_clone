@@ -1,0 +1,51 @@
+.profile {
+  background: rgb(0, 0, 0);
+  width: 100%;
+  height: 100vh;
+}
+.profile_content {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 18%;
+  max-width: 800px;
+}
+.profile_header {
+  display: flex;
+  color: white;
+  justify-content: center;
+  align-items: flex-start;
+}
+.profile_header > img {
+  width: 100px;
+  object-fit: contain;
+  margin-right: 0.5rem;
+}
+.profile_header > .profile_info {
+  border-bottom: 1px solid rgba(245, 245, 245, 0.555);
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-around;
+}
+.profile_header > .profile_info > .profile_email {
+  background: gray;
+  padding: 1rem 0 1rem 0.4rem;
+  width: 100%;
+  font-size: 20px;
+  font-weight: 600;
+  border-radius: 4px;
+}
+.profile_header > .profile_info > .profileCurrent_plan {
+  margin-top: 10px;
+  font-size: 20px;
+  font-weight: 500;
+  letter-spacing: 1px;
+}
+.profile_header > .profile_info > .profilePlan_renewal {
+  margin-top: 10px;
+  padding-bottom: 10px;
+}

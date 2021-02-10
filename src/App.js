@@ -1,56 +1,81 @@
-import React from 'react';
-import logo from './logo.svg';
-import { Counter } from './features/counter/Counter';
-import './App.css';
-
+import React, { useEffect, useState } from "react";
+import "./App.css";
+import Homescreen from "./Components/Screens/Homescreen";
+import PlansScreen from "./Components/Screens/PlansScreen";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import Login from "./Components/Login";
+import db, { auth } from "./firebase";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  logout,
+  login,
+  selectUser,
+  selectPlan,
+  currentPlan,
+} from "./features/userSlice";
+import Profile from "./Components/Profile";
+import SubscribeScreen from "./Components/Screens/SubscribeScreen";
 function App() {
+  console.log(process.env);
+  const user = useSelector(selectUser);
+  const currentSubscription = useSelector(selectPlan);
+  // console.log(plan);
+  // console.log(user);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((authUser) => {
+      if (authUser) {
+        dispatch(
+          login({
+            uid: authUser.uid,
+            photo: authUser?.photoURL,
+            email: authUser.email,
+            displayName: authUser.displayName,
+          })
+        );
+      } else {
+        dispatch(logout());
+      }
+    });
+    return unsubscribe;
+  }, []);
+  useEffect(() => {
+    if (user) {
+      db.collection("customers")
+        .doc(user?.uid)
+        .collection("subscriptions")
+        .get()
+        .then((querySnapShot) => {
+          querySnapShot.forEach(async (subscription) => {
+            dispatch(currentPlan(subscription.data().role));
+          });
+        });
+    }
+  }, [user]);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <Counter />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <span>
-          <span>Learn </span>
-          <a
-            className="App-link"
-            href="https://reactjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux-toolkit.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux Toolkit
-          </a>
-          ,<span> and </span>
-          <a
-            className="App-link"
-            href="https://react-redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React Redux
-          </a>
-        </span>
-      </header>
+    <div className="app">
+      <Router>
+        {!user ? (
+          <Login />
+        ) : (
+          <Switch>
+            {!currentSubscription ? (
+              <SubscribeScreen />
+            ) : (
+              <>
+                <Route path="/yourAccount">
+                  <Profile />
+                </Route>
+
+                <Route exact path="/">
+                  <Homescreen />
+                </Route>
+              </>
+            )}
+          </Switch>
+        )}
+      </Router>
     </div>
   );
 }

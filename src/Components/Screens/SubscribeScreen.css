@@ -1,0 +1,44 @@
+.SubscribeScreen {
+  display: flex !important;
+  flex-direction: column;
+}
+.header_ {
+  background-color: whitesmoke;
+  height: 5rem;
+  border-bottom: 2px solid whitesmoke;
+}
+.btn_signout {
+  z-index: 1000;
+  position: absolute;
+  right: 5%;
+  top: 5%;
+  font-weight: 500;
+  text-transform: uppercase;
+  color: rgba(55, 55, 55, 0.845);
+  cursor: pointer !important;
+}
+.plans_screen-container {
+  width: 80%;
+  padding: 2rem;
+  margin: auto;
+  margin-top: 2rem;
+  max-width: 600px;
+  border-radius: 4px;
+  /* margin-left: auto;
+  margin-right: auto; */
+  background-color: rgba(0, 0, 0, 0.81);
+}
+.description {
+  padding: 1rem 0 0 3rem;
+  margin-top: 3rem;
+}
+.description > h5 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 08px;
+  color: rgba(0, 0, 0, 0.753);
+}
+.description > p {
+  font-size: 16px;
+  font-weight: 400;
+}
